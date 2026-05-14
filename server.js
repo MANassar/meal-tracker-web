@@ -116,9 +116,11 @@ const extractResponseText = (responseData) => {
 };
 
 app.post('/api/estimate', estimateUpload.single('image'), async (req, res) => {
-  if (!process.env.OPENAI_API_KEY) {
+  const openaiApiKey = (req.body.api_key || process.env.OPENAI_API_KEY || '').trim();
+
+  if (!openaiApiKey) {
     return res.status(500).json({
-      error: 'AI estimation is not configured. Set OPENAI_API_KEY on the server.',
+      error: 'AI estimation is not configured. Add an API key in Settings or set OPENAI_API_KEY on the server.',
     });
   }
 
@@ -161,7 +163,7 @@ app.post('/api/estimate', estimateUpload.single('image'), async (req, res) => {
     const openaiResponse = await fetch('https://api.openai.com/v1/responses', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        Authorization: `Bearer ${openaiApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

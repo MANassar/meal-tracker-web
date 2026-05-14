@@ -3,8 +3,10 @@ import { useEffect, useState } from 'react';
 const API_BASE =
   import.meta.env.VITE_API_BASE ||
   (import.meta.env.DEV ? 'http://localhost:4000' : '');
+const API_KEY_STORAGE_KEY = 'meal-tracker-openai-api-key';
 
 function App() {
+  const [activeView, setActiveView] = useState('tracker');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -18,6 +20,9 @@ function App() {
   const [clarification, setClarification] = useState('');
   const [clarificationQuestion, setClarificationQuestion] = useState('');
   const [estimateNotes, setEstimateNotes] = useState('');
+  const [apiKey, setApiKey] = useState(() => localStorage.getItem(API_KEY_STORAGE_KEY) || '');
+  const [showApiKey, setShowApiKey] = useState(false);
+  const [settingsMessage, setSettingsMessage] = useState('');
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -77,6 +82,9 @@ function App() {
     const formData = new FormData();
     formData.append('description', description);
     formData.append('clarification', clarification);
+    if (apiKey.trim()) {
+      formData.append('api_key', apiKey.trim());
+    }
     if (image) {
       formData.append('image', image);
     }
@@ -103,6 +111,19 @@ function App() {
     } finally {
       setEstimating(false);
     }
+  };
+
+  const handleSaveSettings = (event) => {
+    event.preventDefault();
+    localStorage.setItem(API_KEY_STORAGE_KEY, apiKey.trim());
+    setApiKey(apiKey.trim());
+    setSettingsMessage('API key saved on this device.');
+  };
+
+  const handleClearSettings = () => {
+    localStorage.removeItem(API_KEY_STORAGE_KEY);
+    setApiKey('');
+    setSettingsMessage('API key removed from this device.');
   };
 
   const handleSubmit = async (event) => {
@@ -151,10 +172,66 @@ function App() {
   return (
     <div className="app-shell">
       <header>
-        <h1>Meal Tracker</h1>
-        <p>Upload a meal photo, log macros, and save it locally.</p>
+        <div>
+          <h1>Meal Tracker</h1>
+          <p>Upload a meal photo, estimate macros, and save it locally.</p>
+        </div>
+        <nav className="app-nav" aria-label="App pages">
+          <button
+            type="button"
+            className={activeView === 'tracker' ? 'nav-button active' : 'nav-button'}
+            onClick={() => setActiveView('tracker')}
+          >
+            Tracker
+          </button>
+          <button
+            type="button"
+            className={activeView === 'settings' ? 'nav-button active' : 'nav-button'}
+            onClick={() => setActiveView('settings')}
+          >
+            Settings
+          </button>
+        </nav>
       </header>
 
+      {activeView === 'settings' ? (
+        <main className="settings-main">
+          <section className="settings-panel">
+            <h2>Settings</h2>
+            <form onSubmit={handleSaveSettings}>
+              <label>
+                OpenAI API key
+                <div className="api-key-row">
+                  <input
+                    type={showApiKey ? 'text' : 'password'}
+                    value={apiKey}
+                    onChange={(e) => {
+                      setApiKey(e.target.value);
+                      setSettingsMessage('');
+                    }}
+                    placeholder="sk-..."
+                    autoComplete="off"
+                    spellCheck="false"
+                  />
+                  <button type="button" className="secondary-button" onClick={() => setShowApiKey((value) => !value)}>
+                    {showApiKey ? 'Hide' : 'Show'}
+                  </button>
+                </div>
+              </label>
+              <p className="settings-note">
+                The key is saved only in this browser on this device. It is sent to your app server only when estimating a meal.
+              </p>
+              <div className="settings-actions">
+                <button type="submit">Save key</button>
+                <button type="button" className="danger-button" onClick={handleClearSettings}>
+                  Clear key
+                </button>
+              </div>
+              {settingsMessage && <p className="estimate-notes">{settingsMessage}</p>}
+            </form>
+          </section>
+        </main>
+      ) : (
       <main>
         <section className="meal-form">
           <h2>Log a meal</h2>
@@ -295,6 +372,7 @@ function App() {
           </div>
         </section>
       </main>
+      )}
     </div>
   );
 }

@@ -7,6 +7,7 @@ A simple meal-tracking web app with local SQLite storage.
 - Add optional description
 - Estimate calories, protein, carbs, and fat with AI from a photo and/or description
 - Ask a clarification question when the meal or portion is unclear
+- Add an OpenAI API key from the in-app Settings page
 - Record calories, protein, carbs, and fat
 - Store meals in a local SQLite database
 - View meal history and macro totals
@@ -40,11 +41,13 @@ npm start
 
 The production server runs the API and serves the built mobile app from `dist/`.
 
-AI estimation requires an OpenAI API key on the server:
+AI estimation can use either an API key saved from the app's Settings page or an API key configured on the server:
 
 ```bash
 OPENAI_API_KEY=your_api_key npm start
 ```
+
+Keys saved in Settings are stored only in that browser on that device and are sent to the app server only for meal estimation requests.
 
 Optional:
 
