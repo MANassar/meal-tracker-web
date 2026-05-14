@@ -1,0 +1,321 @@
+:root {
+  color-scheme: light;
+  font-family: Inter, Arial, sans-serif;
+  background: #f4f7fb;
+  color: #1f2937;
+  font-size: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body,
+html {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: #f4f7fb;
+  min-width: 320px;
+}
+
+.app-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2rem) clamp(0.875rem, 3vw, 1.5rem) 4rem;
+}
+
+header {
+  text-align: center;
+  margin-bottom: clamp(1.25rem, 4vw, 2rem);
+}
+
+header h1 {
+  margin: 0;
+  font-size: clamp(2rem, 8vw, 3rem);
+  line-height: 1.05;
+}
+
+header p {
+  margin: 0.75rem auto 0;
+  max-width: 680px;
+  color: #4b5563;
+  font-size: clamp(1rem, 3.8vw, 1.08rem);
+  line-height: 1.55;
+}
+
+main {
+  display: grid;
+  gap: 2rem;
+}
+
+.meal-form,
+.meal-history {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: clamp(1rem, 4vw, 1.75rem);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.05);
+  min-width: 0;
+}
+
+.meal-form h2,
+.meal-history h2 {
+  margin-top: 0;
+  line-height: 1.2;
+}
+
+form {
+  display: grid;
+  gap: 1.1rem;
+}
+
+label {
+  display: grid;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+input[type='file'],
+input[type='number'],
+textarea {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  padding: 0.85rem 1rem;
+  background: #f9fafb;
+  font: inherit;
+  font-size: 1rem;
+}
+
+textarea {
+  min-height: 112px;
+  resize: vertical;
+}
+
+.macros-grid {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+button {
+  border: none;
+  border-radius: 8px;
+  min-height: 50px;
+  padding: 0.95rem 1.3rem;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.secondary-button {
+  background: #0f766e;
+}
+
+.secondary-button:hover:not(:disabled) {
+  background: #115e59;
+}
+
+.clarification-box {
+  display: grid;
+  gap: 1rem;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  background: #f0f9ff;
+  padding: 1rem;
+}
+
+.clarification-box p,
+.estimate-notes {
+  margin: 0;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.clarification-box p {
+  font-weight: 700;
+}
+
+.estimate-notes {
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  background: #f0fdf4;
+  padding: 0.85rem 1rem;
+}
+
+.preview {
+  display: flex;
+  justify-content: center;
+}
+
+.preview img {
+  width: 100%;
+  max-height: min(50vh, 320px);
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #e5e7eb;
+}
+
+.meal-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.meal-card {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 180px 1fr;
+  align-items: start;
+  min-width: 0;
+}
+
+.meal-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.meal-card-content {
+  display: grid;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.meal-card-content p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.meal-time {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.macro-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-weight: 700;
+}
+
+.macro-values span {
+  border-radius: 8px;
+  background: #eef2ff;
+  color: #1e3a8a;
+  padding: 0.45rem 0.6rem;
+  line-height: 1;
+}
+
+.totals-card {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #f8fafc;
+}
+
+.totals-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.error-message {
+  color: #b91c1c;
+  font-weight: 700;
+  margin: 0;
+}
+
+@media (min-width: 980px) {
+  main {
+    grid-template-columns: minmax(340px, 420px) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .meal-form {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .meal-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .app-shell {
+    padding-inline: 0;
+    padding-top: 1rem;
+  }
+
+  header {
+    padding-inline: 1rem;
+    text-align: left;
+  }
+
+  .meal-form,
+  .meal-history {
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  main {
+    gap: 1rem;
+  }
+
+  .macros-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .meal-card {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .meal-card:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .meal-card img {
+    aspect-ratio: 16 / 10;
+  }
+
+  .totals-row {
+    font-size: 0.98rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .macros-grid {
+    grid-template-columns: 1fr;
+  }
+}
